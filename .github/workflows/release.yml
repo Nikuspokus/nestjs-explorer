@@ -1,0 +1,43 @@
+name: Release
+
+# Un tag vX.Y.Z (doit correspondre à "version" de package.json) déclenche : build → release → page Pages.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write   # créer la release GitHub
+  pages: write      # publier sur GitHub Pages
+  id-token: write   # requis par actions/deploy-pages
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run package          # produit <name>-<version>.vsix
+      - run: node scripts/make-site.mjs   # produit site/ (latest.json, index.html, .vsix)
+        env:
+          TAG: ${{ github.ref_name }}
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: '*.vsix'
+          generate_release_notes: true
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

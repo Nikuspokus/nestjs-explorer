@@ -1,0 +1,75 @@
+{
+  "name": "nestjs-explorer",
+  "displayName": "NestJS Explorer",
+  "description": "Arbre des modules, controllers et providers d'un projet NestJS",
+  "version": "0.1.1",
+  "publisher": "nikuspokus",
+  "license": "UNLICENSED",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "nestExplorer",
+          "title": "NestJS Explorer",
+          "icon": "$(symbol-class)"
+        }
+      ]
+    },
+    "views": {
+      "nestExplorer": [
+        {
+          "id": "nestExplorer.modules",
+          "name": "Modules"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "nestExplorer.refresh",
+        "title": "NestJS Explorer: Refresh",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "nestExplorer.refresh",
+          "when": "view == nestExplorer.modules",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "package": "npm run build && vsce package --no-dependencies --skip-license",
+    "dump": "tsx scripts/dump-graph.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "^4.1.1",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.0.0"
+  },
+  "dependencies": {
+    "ts-morph": "^28.0.0"
+  },
+  "homepage": "https://nikuspokus.github.io/nestjs-explorer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nikuspokus/nestjs-explorer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Nikuspokus/nestjs-explorer/issues"
+  }
+}
