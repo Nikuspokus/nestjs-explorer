@@ -51,6 +51,8 @@
   },
   "scripts": {
     "build": "node esbuild.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "package": "npm run build && vsce package --no-dependencies --skip-license",
     "dump": "tsx scripts/dump-graph.ts"
   },
@@ -59,7 +61,9 @@
     "@types/vscode": "1.90.0",
     "@vscode/vsce": "^4.1.1",
     "esbuild": "^0.28.2",
-    "tsx": "^4.0.0"
+    "tsx": "^4.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.1"
   },
   "dependencies": {
     "ts-morph": "^28.0.0"
